@@ -143,3 +143,4 @@ Set to receive plain-text e-mails instead of HTML formatted.
 
 ### `--multiqc_config`
 Specify a path to a custom MultiQC configuration file.
+
