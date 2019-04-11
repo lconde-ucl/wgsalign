@@ -48,6 +48,13 @@ results         # Finished results (configurable, see below)
 
 ## Main Arguments
 
+To see all the available arguments, use the `--help` flag
+```bash
+nextflow_wgsalign --help
+```
+
+The main arguments are:
+
 ### `-profile`
 This parameter is NOT necessary as the shortcut `nextflow_wgsalign` takes care of selecting the appropiate configuration profile. But just for your information, profiles are used to give 
 configuration presets for different compute environments.
