@@ -18,8 +18,8 @@ module_order:
     - wgsalign-summary
     - wgsalign
 report_section_order:
-    wgsalign-summary:
+    nf-core-wgsalign-summary:
         order: -1000
-    wgsalign:
+    nf-core_wgsalign-software-versions:
         order: -1100
 plots_force_interactive: false
