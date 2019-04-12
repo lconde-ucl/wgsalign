@@ -1,8 +1,4 @@
 extra_fn_clean_exts:
-    - _R1
-    - _R2
-    - .R1
-    - .R2
     - .sort
     - .stats
     - '_sorted'
