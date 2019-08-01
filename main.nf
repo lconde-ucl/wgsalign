@@ -299,14 +299,12 @@ process samtools {
     output:
     file '*.sorted.bam' into bam_picard, bam_for_mapped
     file '*.sorted.bam.bai' into bwa_bai, bai_for_mapped
-    file '*.sorted.bed' into bed_total
     file '*.stats.txt' into samtools_stats
 
     script:
     """
     samtools sort $bam -o ${bam.baseName}.sorted.bam
     samtools index ${bam.baseName}.sorted.bam
-    bedtools bamtobed -i ${bam.baseName}.sorted.bam | sort -k 1,1 -k 2,2n -k 3,3n -k 6,6 > ${bam.baseName}.sorted.bed
     samtools stats ${bam.baseName}.sorted.bam > ${bam.baseName}.stats.txt
     """
 }
@@ -350,7 +348,7 @@ process picard {
     output:
     file '*.dedup.sorted.bam' into bam_dedup_spp, bam_dedup_ngsplot, bam_dedup_deepTools, bam_dedup_macs, bam_dedup_saturation, bam_dedup_bigwigs
     file '*.dedup.sorted.bam.bai' into bai_dedup_deepTools, bai_dedup_ngsplot, bai_dedup_macs, bai_dedup_saturation, bai_dedup_bigwigs
-    file '*.dedup.sorted.bed' into bed_dedup
+    file '*.dedup.sorted.bed.gz' into bed_dedup
     file '*.picardDupMetrics.txt' into picard_reports
 
     script:
@@ -379,33 +377,13 @@ process picard {
         PROGRAM_RECORD_ID='null'
     samtools sort ${prefix}.dedup.bam -o ${prefix}.dedup.sorted.bam
     samtools index ${prefix}.dedup.sorted.bam
-    bedtools bamtobed -i ${prefix}.dedup.sorted.bam | sort -k 1,1 -k 2,2n -k 3,3n -k 6,6 > ${prefix}.dedup.sorted.bed
+    bedtools bamtobed -i ${prefix}.dedup.sorted.bam | sort -k 1,1 -k 2,2n -k 3,3n -k 6,6 | gzip - > ${prefix}.dedup.sorted.bed.gz
     """
 }
 
 
 /*
- * STEP 5 Read_count_statistics
- */
-
-process countstat {
-    tag "${input[0].baseName}"
-    publishDir "${params.outdir}/countstat", mode: 'copy'
-
-    input:
-    file input from bed_total.mix(bed_dedup).toSortedList()
-
-    output:
-    file 'read_count_statistics.txt' into countstat_results
-
-    script:
-    """
-    countstat.pl $input
-    """
-}
-
-/*
- * STEP 6 Create bigWigs
+ * STEP 5 Create bigWigs
  */
 
 process bigwigs {
@@ -454,7 +432,7 @@ process get_software_versions {
 }
 
 /*
- * STEP 7 - MultiQC
+ * STEP 6 - MultiQC
  */
 process multiqc {
     publishDir "${params.outdir}/MultiQC", mode: 'copy'
@@ -482,7 +460,7 @@ process multiqc {
 
 
 /*
- * STEP 8 - Output Description HTML
+ * STEP 7 - Output Description HTML
  */
 process output_documentation {
     tag "$prefix"
