@@ -30,7 +30,7 @@
 The typical command for running the pipeline is as follows:
 ```bash
 module load blic-modules
-module load nextflow
+module load nextflow_wgsalign
 
 nextflow_wgsalign --reads '*_R{1,2}.fastq.gz' --genome GRCh38
 ```

@@ -1,10 +1,10 @@
 # wgsalign: Installation
 
-The wgsalign pipeline is already installed in legion and myriad. You just need to load nextflow and start using it:
+The wgsalign pipeline is already installed in myriad. You just need to load it and start using it:
 
 ```bash
 module load blic-modules
-module load nextflow
+module load nextflow_wgsalign
 
 nextflow_wgsalign --reads '*_R{1,2}.fastq.gz' --genome GRCh38
 ```
